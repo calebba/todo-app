@@ -14,27 +14,30 @@ class CustomAuthMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-     public function handle($request, Closure $next)
-    {
-        //authenticate token
-        $token = $request->header('Authorization');
-        if (!$this->isValidToken($token)) {
+    public function handle($request, Closure $next){
+        $authorizationHeader = $request->header('Authorization');
+
+       // Check if the header exists and starts with 'Bearer'
+        if ($authorizationHeader && strpos($authorizationHeader, 'Bearer') === 0) {
+
+            // Extract the token by removing 'Bearer ' prefix
+            $token = substr($authorizationHeader, 7);
+
+            // Check if the token is valid
+            if (!$this->isValidToken($token)) {
+                return response()->json(['error' => 'Unauthorized'], 401);
+            }
+        } else {
+            // No token
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
         return $next($request);
     }
 
-    private function isValidToken($token)
-    {
-        // Validate token and retrieve user
+    private function isValidToken($token){
+
         $user = User::where('api_token', $token)->first();
-
-        if (!$user) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-
-        // Add authenticated user to request for use in subsequent middleware or controllers
-        $request->user = $user;
+        return $user !== null; // Return true only if a user with this token exists
     }
 }

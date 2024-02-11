@@ -18,6 +18,7 @@ class Todo extends Model
         'title',
         'description',
         'status',
+        'user_id',
         'completed',
     ];
 }

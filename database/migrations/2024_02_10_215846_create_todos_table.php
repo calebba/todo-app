@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('todos', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('description')->nullable();
-            $table->string('status')->nullable()->default('New'); //status include: New,In Progress, Under Review, 
+            $table->string('status')->nullable()->default('New'); //status include: New,In Progress, Under Review,
             $table->boolean('completed')->nullable()->default(false);
             $table->timestamps();
         });

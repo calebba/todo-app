@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Todo;
 use Illuminate\Http\Request;
+use App\Http\Resources\TodoResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 Use App\Http\Requests\TodoRequest;
 
@@ -35,7 +36,7 @@ class TodoController extends Controller
         }
 
         $todo->update($request->validated());
-        return response()->json(['message' => 'Todo deleted successfully', 'data' => $todo], 200);
+        return response()->json(['message' => 'Todo updated successfully', 'data' => $todo], 200);
     }
 
     public function destroy(Todo $todo){

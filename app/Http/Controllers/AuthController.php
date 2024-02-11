@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use App\Http\Requests\UserRequest;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
-Use App\Http\Requests\UserRequest;
 
 class AuthController extends Controller
 {
@@ -14,6 +17,7 @@ class AuthController extends Controller
 
         if (auth()->attempt($credentials)) {
             $user = auth()->user();
+
             // Generate new API token
             $apiToken = $this->generateToken($user);
             return response()->json(['message' => 'Login successful', 'Bearer token' => $apiToken, 'data' => $user], 200);
@@ -24,7 +28,7 @@ class AuthController extends Controller
 
 
     public function register(UserRequest $request){
-    
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -38,7 +42,7 @@ class AuthController extends Controller
 
     public function logout(Request $request, $id){
         $user = User::find($id);
-        
+
         if ($user) {
             $user->update(['api_token' => null]);
             return response()->json(['message' => 'Logout successful'], 200);
@@ -59,7 +63,8 @@ class AuthController extends Controller
     }
 
     private function generateToken(User $user){
-        $apiToken = bcrypt($user->email . '|' . now());
+        $apiToken = Str::random(60);
+
         $user->update(['api_token' => $apiToken]);
 
         return $apiToken;

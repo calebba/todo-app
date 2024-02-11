@@ -11,7 +11,7 @@ class TodoRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,14 +24,16 @@ class TodoRequest extends FormRequest
         $rules = [
             'title' => 'required|string|max:255',
             'description' => 'string|max:255',
-            'staus' => 'string|max:255',
-            'completed' => 'boolean'
+            'status' => 'string|max:255',
+            'completed' => 'boolean',
+            'user_id' => 'required|exists:users,id',
         ];
 
         if ($this->isMethod('put') || $this->isMethod('patch')){
             $rules['title'] = 'sometimes|string|max:255';
+            $rules['user_id'] = 'sometimes|exists:users,id';
         }
-        
+
         return $rules;
     }
 }
