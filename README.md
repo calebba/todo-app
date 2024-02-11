@@ -24,14 +24,20 @@ Before running the application, ensure you have the following installed:
     ```bash
     cd <project-directory>
     ```
+    
+3. Create .env file:
 
-3. Install Composer dependencies:
+    ```bash
+    make copy of .env.example and save as .env
+    ```
+
+4. Install Composer dependencies:
 
     ```bash
     composer install
     ```
 
-4. Generate application key:
+5. Generate application key:
 
     ```bash
     php artisan key:generate
