@@ -6,8 +6,9 @@ This is a basic guide on how to set up and run this Laravel application.
 
 Before running the application, ensure you have the following installed:
 
--   PHP >= 7.4
+-   PHP >= 8.1
 -   Composer
+-   Server of your choice
 -   MySQL
 
 ## Installation
@@ -69,13 +70,12 @@ Before running the application, ensure you have the following installed:
 
 ## Running the Application
 
----
 To run the Laravel application, execute the following command:
 
 ```bash
 php artisan serve
 ```
-
+---
 # Todo API Documentation
 
 This document provides an overview and usage instructions for the Todo-app API.
@@ -93,6 +93,15 @@ Register a new user with the following parameters:
 - `email`: Email address of the user (required)
 - `password`: Password for the user (required)
 
+#### Sample Body
+```json
+{
+    "name": "John Doe",
+    "email": "john@gmail.com",
+    "password": "password"
+}
+```
+
 ### Login
 ```http
 POST /api/auth/login
@@ -100,6 +109,14 @@ POST /api/auth/login
 Login with an existing user to obtain a JWT token. Requires the following parameters:
 - `email`: Email address of the user (required)
 - `password`: Password for the user (required)
+
+#### Sample Body
+```json
+{
+    "email":"john@gmail.com",
+    "password":"password"
+}
+```
 
 ## Todo Endpoints
 
@@ -114,6 +131,14 @@ Create a new todo with the following parameters:
 - `user_id`: Id of the user creating the record (required)
 - `description`: Description of the todo
 
+#### Sample Body
+```json
+{
+    "title": "Doc updates",
+    "user_id": 1,
+    "description": "Update users model",
+}
+```
 Requires authentication with a valid api token.
 
 ### Get All Todos
@@ -143,6 +168,17 @@ Update an existing todo by its ID. Requires the following parameters:
 - `status`: Updated status of the todo to New, Under Review, In Progress or Completed
 - `completed`: Updated todo to completed
 
+#### Sample Body
+```json
+{
+    "title": "First tests",
+    "user_id": 1,
+    "description": "This is a tests",
+    "status": "Completed",
+    "completed": 1
+}
+```
+
 Requires authentication with a valid api token.
 
 ### Delete Todo
@@ -158,3 +194,5 @@ Requires authentication with a valid api token.
 If a request fails due to validation errors or authentication issues, the API will return an appropriate error response with a corresponding status code.
 
 ---
+
+
